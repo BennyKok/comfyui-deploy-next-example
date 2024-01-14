@@ -82,7 +82,7 @@ export class ComfyDeployClient {
     let run: Awaited<ReturnType<typeof this.getRun>> = null;
     for (let i = 0; i < timeout; i++) {
       run = await this.getRun(runResult.run_id);
-      if (run && run.status == "succuss") {
+      if (run && run.status == "success") {
         break;
       }
       await new Promise((resolve) => setTimeout(resolve, interval));

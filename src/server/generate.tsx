@@ -8,7 +8,7 @@ const client = new ComfyDeployClient({
 
 export async function generate(prompt: string){
     return await client.run({
-        deployment_id: "8dc98937-9842-425b-a562-970329d07639",
+        deployment_id: process.env.COMFY_DEPLOYMENT_ID!,
         inputs: {
             "input_text": prompt
         }
