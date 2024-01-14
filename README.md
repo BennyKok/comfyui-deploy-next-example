@@ -1,3 +1,7 @@
+https://github.com/BennyKok/comfyui-deploy-next-example/assets/18395202/6e7e013c-21aa-432d-af77-07f729912f0f
+
+Create an account on [ComfyDeply](https://comfydeploy.com/) setup your workflow and machine ([view here](https://twitter.com/BennyKokMusic/status/1746578134311243830)) and environemnt key
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
