@@ -34,7 +34,7 @@ export default function Home() {
   }, [runId]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between mt-10">
       <Card className="w-full max-w-[500px]">
         <CardHeader>
           Comfy Deploy - Vector Line Art Tool
@@ -68,11 +68,7 @@ export default function Home() {
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
             />
-            <Button
-              type="submit"
-              className="flex gap-2"
-              disabled={loading}
-            >
+            <Button type="submit" className="flex gap-2" disabled={loading}>
               Generate {loading && <LoadingIcon />}
             </Button>
 
