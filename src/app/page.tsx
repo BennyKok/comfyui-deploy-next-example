@@ -130,6 +130,7 @@ function Img2img() {
   const [status, setStatus] = useState<string>();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
     setPrompt(e.target.files[0]);
   };
 
