@@ -14,6 +14,12 @@ const runOutputTypes = z.object({
   ),
 });
 
+const uploadFileTypes = z.object({
+  upload_url: z.string(),
+  file_id: z.string(),
+  download_url: z.string(),
+})
+
 export class ComfyDeployClient {
   apiBase: string = "https://www.comfydeploy.com/api";
   apiToken: string;
@@ -95,5 +101,28 @@ export class ComfyDeployClient {
     }
 
     return run;
+  }
+
+  async getUploadUrl(type: string, file_size: number) {
+    const obj = {
+      type: type,
+      file_size: file_size.toString(),
+    };
+    const url = new URL(`${this.apiBase}/upload-url`);
+    url.search = new URLSearchParams(obj).toString();
+    
+    return await fetch(url.href, {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${this.apiToken}`,
+      },
+      cache: "no-store"
+    })
+      .then((response) => response.json())
+      .then((json) => uploadFileTypes.parse(json))
+      .catch((err) => {
+        console.error(err);
+        return null;
+      });
   }
 }
