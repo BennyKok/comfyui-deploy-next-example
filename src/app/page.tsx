@@ -35,7 +35,7 @@ export default function Page() {
   );
 }
 
-export function Txt2img() {
+function Txt2img() {
   const [prompt, setPrompt] = useState("");
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -122,7 +122,7 @@ export function Txt2img() {
   );
 }
 
-export function Img2img() {
+function Img2img() {
   const [prompt, setPrompt] = useState<File>();
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -152,20 +152,12 @@ export function Img2img() {
 
   return (
     <Card className="w-full max-w-[500px]">
-      <CardHeader>
-        Comfy Deploy - Vector Line Art Tool
-        <div className="text-xs text-foreground opacity-50">
-          Lora -{" "}
-          <a href="https://civitai.com/models/256144/stick-line-vector-illustration">
-            stick-line-vector-illustration
-          </a>
-        </div>
-      </CardHeader>
+      <CardHeader>Comfy Deploy - Scribble to Anime Girl</CardHeader>
       <CardContent>
         <form
           className="grid w-full items-center gap-1.5"
           onSubmit={(e) => {
-            e.preventDefault()
+            e.preventDefault();
             if (loading) return;
             if (!prompt) return;
 
