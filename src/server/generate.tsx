@@ -25,6 +25,16 @@ export async function generate_img(input_image: string){
     })
 }
 
+export async function generate_img_with_controlnet(input_openpose_url: string, prompt: string){
+    return await client.run({
+        deployment_id: process.env.COMFY_DEPLOYMENT_ID_CONTROLNET!,
+        inputs: {
+            "positive_prompt": prompt,
+            "openpose": input_openpose_url
+        }
+    })
+}
+
 export async function checkStatus(run_id: string){
     return await client.getRun(run_id)
 }

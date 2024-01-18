@@ -6,11 +6,11 @@ const runTypes = z.object({
 
 const runOutputTypes = z.object({
   id: z.string(),
-  status: z.enum(["success", "failed", "running", "uploading"]),
+  status: z.enum(["success", "failed", "running", "uploading", "not-started"]),
   outputs: z.array(
     z.object({
       data: z.any(),
-    })
+    }),
   ),
 });
 
@@ -18,15 +18,16 @@ const uploadFileTypes = z.object({
   upload_url: z.string(),
   file_id: z.string(),
   download_url: z.string(),
-})
+});
 
 export class ComfyDeployClient {
   apiBase: string = "https://www.comfydeploy.com/api";
   apiToken: string;
 
   constructor({ apiBase, apiToken }: { apiBase?: string; apiToken: string }) {
-    if (apiBase)
+    if (apiBase) {
       this.apiBase = `${apiBase}/api`;
+    }
     this.apiToken = apiToken;
   }
 
@@ -47,12 +48,16 @@ export class ComfyDeployClient {
         deployment_id: deployment_id,
         inputs: inputs,
       }),
-      cache: "no-store"
+      cache: "no-store",
     })
-      .then((response) => response.json())
-      .then((json) => runTypes.parse(json))
+      .then((response) => {
+        console.log('response', response)
+        return response.json()})
+      .then((json) => {
+        console.log('json', json)
+        return runTypes.parse(json)})
       .catch((err) => {
-        console.error(err);
+        console.error('err', err);
         return null;
       });
   }
@@ -64,7 +69,7 @@ export class ComfyDeployClient {
         "Content-Type": "application/json",
         authorization: `Bearer ${this.apiToken}`,
       },
-      cache: "no-store"
+      cache: "no-store",
     })
       .then((response) => response.json())
       .then((json) => runOutputTypes.parse(json))
@@ -110,13 +115,13 @@ export class ComfyDeployClient {
     };
     const url = new URL(`${this.apiBase}/upload-url`);
     url.search = new URLSearchParams(obj).toString();
-    
+
     return await fetch(url.href, {
       method: "GET",
       headers: {
         authorization: `Bearer ${this.apiToken}`,
       },
-      cache: "no-store"
+      cache: "no-store",
     })
       .then((response) => response.json())
       .then((json) => uploadFileTypes.parse(json))
