@@ -1,10 +1,14 @@
 "use client";
 import { LoadingIcon } from "@/components/LoadingIcon";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 import { checkStatus } from "@/server/generate";
 import { useEffect, useState } from "react";
 
-export function ImageGenerationResult({ runId }: { runId: string; }) {
+export function ImageGenerationResult({
+  runId,
+  className
+}: { runId: string } & React.ComponentProps<"div">) {
   const [image, setImage] = useState("");
   const [status, setStatus] = useState<string>("preparing");
   const [loading, setLoading] = useState(true);
@@ -27,7 +31,7 @@ export function ImageGenerationResult({ runId }: { runId: string; }) {
   }, [runId]);
 
   return (
-    <div className="border border-gray-200 w-full square w-full rounded-lg relative">
+    <div className={cn("border border-gray-200 w-full aspect-[512/768] rounded-lg relative", className)}>
       {!loading && image && (
         <img
           className="w-full h-full object-contain"

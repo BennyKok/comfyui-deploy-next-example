@@ -27,6 +27,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ImageGenerationResult } from "@/components/ImageGenerationResult";
 
 export default function Page() {
   return (
@@ -53,27 +54,8 @@ export default function Page() {
 
 function Txt2img() {
   const [prompt, setPrompt] = useState("");
-  const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [runId, setRunId] = useState("");
-  const [status, setStatus] = useState<string>();
-
-  // Polling in frontend to check for the
-  useEffect(() => {
-    if (!runId) return;
-    const interval = setInterval(() => {
-      checkStatus(runId).then((res) => {
-        if (res) setStatus(res.status);
-        if (res && res.status === "success") {
-          console.log(res.outputs[0]?.data);
-          setImage(res.outputs[0]?.data?.images[0].url);
-          setLoading(false);
-          clearInterval(interval);
-        }
-      });
-    }, 2000);
-    return () => clearInterval(interval);
-  }, [runId]);
+  const [runIds, setRunIds] = useState<string[]>([]);
 
   return (
     <Card className="w-full max-w-[600px]">
@@ -90,20 +72,27 @@ function Txt2img() {
         <form
           className="grid w-full items-center gap-1.5"
           onSubmit={(e) => {
-            if (loading) return;
-
             e.preventDefault();
+
+            if (loading) return;
             setLoading(true);
-            generate(prompt).then((res) => {
-              console.log(res);
-              if (!res) {
-                setStatus("error");
-                setLoading(false);
-                return;
-              }
-              setRunId(res.run_id);
+
+            const promises = Array(4).fill(null).map(() => {
+              return generate(prompt)
+                .then((res) => {
+                  if (res) {
+                    setRunIds((ids) => [...ids, res.run_id]);
+                  }
+                  return res;
+                })
+                .catch((error) => {
+                  console.error(error);
+                });
             });
-            setStatus("preparing");
+
+            Promise.all(promises).finally(() => {
+              setLoading(false);
+            });
           }}
         >
           <Label htmlFor="picture">Image prompt</Label>
@@ -117,21 +106,10 @@ function Txt2img() {
             Generate {loading && <LoadingIcon />}
           </Button>
 
-          <div className="border border-gray-200 w-full square h-[400px] rounded-lg relative">
-            {!loading && image && (
-              <img
-                className="w-full h-full object-contain"
-                src={image}
-                alt="Generated image"
-              >
-              </img>
-            )}
-            {!image && status && (
-              <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center gap-2">
-                {status} <LoadingIcon />
-              </div>
-            )}
-            {loading && <Skeleton className="w-full h-full" />}
+          <div className="grid grid-cols-2 gap-4">
+            {runIds.map((runId, index) => (
+              <ImageGenerationResult key={index} runId={runId} />
+            ))}
           </div>
         </form>
       </CardContent>
@@ -226,22 +204,7 @@ function Img2img() {
             Generate {loading && <LoadingIcon />}
           </Button>
 
-          <div className="border border-gray-200 w-full square h-[400px] rounded-lg relative">
-            {!loading && image && (
-              <img
-                className="w-full h-full object-contain"
-                src={image}
-                alt="Generated image"
-              >
-              </img>
-            )}
-            {!image && status && (
-              <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center gap-2">
-                {status} <LoadingIcon />
-              </div>
-            )}
-            {loading && <Skeleton className="w-full h-full" />}
-          </div>
+          {runId && <ImageGenerationResult key={runId} runId={runId} className="aspect-square"/>}
         </form>
       </CardContent>
     </Card>
@@ -250,28 +213,23 @@ function Img2img() {
 
 const poses = {
   arms_on_hips: {
-    url:
-      "https://pub-6230db03dc3a4861a9c3e55145ceda44.r2.dev/openpose-pose%20(1).png",
+    url: "https://pub-6230db03dc3a4861a9c3e55145ceda44.r2.dev/openpose-pose%20(1).png",
     name: "Arms on Hips",
   },
   waving: {
-    url:
-      "https://pub-6230db03dc3a4861a9c3e55145ceda44.r2.dev/openpose-pose%20(2).png",
+    url: "https://pub-6230db03dc3a4861a9c3e55145ceda44.r2.dev/openpose-pose%20(2).png",
     name: "Waving",
   },
   legs_together_sideways: {
-    url:
-      "https://pub-6230db03dc3a4861a9c3e55145ceda44.r2.dev/openpose-pose%20(3).png",
+    url: "https://pub-6230db03dc3a4861a9c3e55145ceda44.r2.dev/openpose-pose%20(3).png",
     name: "Legs together, body at an angle",
   },
   excited_jump: {
-    url:
-      "https://pub-6230db03dc3a4861a9c3e55145ceda44.r2.dev/openpose-pose%20(4).png",
+    url: "https://pub-6230db03dc3a4861a9c3e55145ceda44.r2.dev/openpose-pose%20(4).png",
     name: "excited jump",
   },
   pointing_to_the_stars: {
-    url:
-      "https://pub-6230db03dc3a4861a9c3e55145ceda44.r2.dev/openpose-pose%20(5).png",
+    url: "https://pub-6230db03dc3a4861a9c3e55145ceda44.r2.dev/openpose-pose%20(5).png",
     name: "Pointing to the stars",
   },
 };
@@ -328,7 +286,7 @@ function OpenposeToImage() {
             e.preventDefault();
             setLoading(true);
             generate_img_with_controlnet(poseImageUrl, prompt).then((res) => {
-              console.log('here', res);
+              console.log("here", res);
               if (!res) {
                 setStatus("error");
                 setLoading(false);
@@ -372,7 +330,7 @@ function OpenposeToImage() {
             Generate {loading && <LoadingIcon />}
           </Button>
 
-          <div className="flex gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div className="w-full rounded-lg relative">
               {/* Pose Image */}
               {poseLoading && (
@@ -386,30 +344,16 @@ function OpenposeToImage() {
                   src={poseImageUrl}
                   alt="Selected pose"
                   onLoad={() => setPoseLoading(false)}
-                >
-                </img>
+                ></img>
               )}
             </div>
-            <Separator
+            {/* <Separator
               orientation="vertical"
               className="border-gray-200"
               decorative
-            />
-            <div className="border border-gray-200 w-full square h-[400px] rounded-lg relative">
-              {!loading && image && (
-                <img
-                  className="w-full h-full object-contain"
-                  src={image}
-                  alt="Generated image"
-                >
-                </img>
-              )}
-              {!image && status && (
-                <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center gap-2">
-                  {status} <LoadingIcon />
-                </div>
-              )}
-              {loading && <Skeleton className="w-full h-full" />}
+            /> */}
+            <div className="w-full h-full">
+              {runId && <ImageGenerationResult key={runId} runId={runId} className="aspect-[768/1152]"/>}
             </div>
           </div>
         </form>
