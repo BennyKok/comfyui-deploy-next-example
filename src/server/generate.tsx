@@ -1,6 +1,6 @@
 "use server"
 
-import { ComfyDeployClient } from "@/lib/comfy-deploy"
+import { ComfyDeployClient } from "comfydeploy"
 
 const client = new ComfyDeployClient({
     apiBase: process.env.COMFY_API_URL,
