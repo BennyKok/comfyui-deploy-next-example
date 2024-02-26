@@ -26,16 +26,21 @@ import {
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ImageGenerationResult } from "@/components/ImageGenerationResult";
+import { WebsocketDemo } from "@/components/WebsocketDemo";
 
 export default function Page() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between mt-10">
-      <Tabs defaultValue="txt2img" className="w-full max-w-[600px]">
-        <TabsList className="grid w-full grid-cols-3">
+      <Tabs defaultValue="ws" className="w-full max-w-[600px]">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="ws">Realtime</TabsTrigger>
           <TabsTrigger value="txt2img">txt2img</TabsTrigger>
           <TabsTrigger value="img2img">img2img</TabsTrigger>
           <TabsTrigger value="controlpose">Controlpose</TabsTrigger>
         </TabsList>
+        <TabsContent value="ws">
+          <WebsocketDemo />
+        </TabsContent>
         <TabsContent value="txt2img">
           <Txt2img />
         </TabsContent>

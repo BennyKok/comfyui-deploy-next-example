@@ -7,7 +7,7 @@ const client = new ComfyDeployClient({
     apiToken: process.env.COMFY_API_TOKEN!,
 })
 
-export async function generate(prompt: string){
+export async function generate(prompt: string) {
     return await client.run({
         deployment_id: process.env.COMFY_DEPLOYMENT_ID!,
         inputs: {
@@ -16,7 +16,7 @@ export async function generate(prompt: string){
     })
 }
 
-export async function generate_img(input_image: string){
+export async function generate_img(input_image: string) {
     return await client.run({
         deployment_id: process.env.COMFY_DEPLOYMENT_ID_IMG_2_IMG!,
         inputs: {
@@ -25,7 +25,7 @@ export async function generate_img(input_image: string){
     })
 }
 
-export async function generate_img_with_controlnet(input_openpose_url: string, prompt: string){
+export async function generate_img_with_controlnet(input_openpose_url: string, prompt: string) {
     return await client.run({
         deployment_id: process.env.COMFY_DEPLOYMENT_ID_CONTROLNET!,
         inputs: {
@@ -35,14 +35,20 @@ export async function generate_img_with_controlnet(input_openpose_url: string, p
     })
 }
 
-export async function checkStatus(run_id: string){
+export async function checkStatus(run_id: string) {
     return await client.getRun(run_id)
 }
 
-export async function getUploadUrl(type: string, file_size: number){
+export async function getUploadUrl(type: string, file_size: number) {
     try {
         return await client.getUploadUrl(type, file_size)
     } catch (error) {
         console.log(error)
     }
+}
+
+export async function getWebsocketUrl() {
+    return await client.getWebsocketUrl({
+        deployment_id: process.env.COMFY_DEPLOYMENT_WS!,
+    })
 }
