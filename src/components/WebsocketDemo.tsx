@@ -75,7 +75,7 @@ export function WebsocketDemo() {
                     if (message?.event == "executing" && message?.data?.node == null)
                         setCurrentLog("done")
                     else if (message?.event == "live_status")
-                    setCurrentLog(`running - ${message.data?.current_node} ${(message.data.progress * 100).toFixed(2)}%`)
+                        setCurrentLog(`running - ${message.data?.current_node} ${(message.data.progress * 100).toFixed(2)}%`)
                     else if (message?.event == "elapsed_time")
                         setCurrentLog(`elapsed time: ${Math.ceil(message.data?.elapsed_time * 100) / 100}s`)
                 }
@@ -112,8 +112,13 @@ export function WebsocketDemo() {
                         break;
                     case 2:
                         imageMime = "image/png"
+                        break;
+                    case 3:
+                        imageMime = "image/webp"
                 }
                 const blob = new Blob([buffer.slice(4)], { type: imageMime });
+                const fileSize = blob.size;
+                console.log(`Received image size: ${(fileSize / 1024).toFixed(2)} KB`);
 
                 // const blob = new Blob([arrayBuffer], { type: 'image/png' }); // Assuming the image is a JPEG
                 const url = URL.createObjectURL(blob);
@@ -155,8 +160,8 @@ export function WebsocketDemo() {
                 <Badge variant={'outline'} className='w-fit'>Status: {status}</Badge>
                 <Badge variant={'outline'} className='w-fit'>
                     {currentLog}
-                    {status == "connected" &&!currentLog && "stating comfy ui"}
-                    {status == "ready" &&!currentLog && " running"}
+                    {status == "connected" && !currentLog && "stating comfy ui"}
+                    {status == "ready" && !currentLog && " running"}
                 </Badge>
             </div>
             <canvas ref={canvasRef} className='rounded-lg' width="1024" height="1024"></canvas>
