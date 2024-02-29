@@ -25,7 +25,7 @@ export function WebsocketDemo() {
     const canvasRef = useRef<HTMLCanvasElement>(null); // Reference to the canvas element
 
     const sendInput = useCallback(() => {
-        if (status == "reconnecting")
+        if (status == "reconnecting" || status == "connecting")
             return
 
         if (ws?.readyState == ws?.CLOSED) {
@@ -60,6 +60,7 @@ export function WebsocketDemo() {
     }, [debouncedPrompt])
 
     const connectWS = useCallback((data: NonNullable<Awaited<ReturnType<typeof getWebsocketUrl>>>) => {
+        setStatus("connecting");
         const websocket = new WebSocket(data.ws_connection_url);
         websocket.binaryType = "arraybuffer";
         websocket.onopen = () => {
@@ -155,20 +156,18 @@ export function WebsocketDemo() {
     }, [connectWS, reconnectCounter])
 
     return (
-        <div className='flex flex-col gap-2'>
+        <div className='flex md:flex-col gap-2 px-2 flex-col-reverse'>
             <div className='flex gap-2'>
                 <Badge variant={'outline'} className='w-fit'>Status: {status}</Badge>
-                <Badge variant={'outline'} className='w-fit'>
+                {(currentLog || status == "connected" || status == "ready") && <Badge variant={'outline'} className='w-fit'>
                     {currentLog}
                     {status == "connected" && !currentLog && "stating comfy ui"}
                     {status == "ready" && !currentLog && " running"}
-                </Badge>
+                </Badge>}
             </div>
-            <canvas ref={canvasRef} className='rounded-lg' width="1024" height="1024"></canvas>
-
+            <canvas ref={canvasRef} className='rounded-lg ring-1 ring-black/10' width="1024" height="1024"></canvas>
 
             <Input
-                id="picture"
                 type="text"
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
