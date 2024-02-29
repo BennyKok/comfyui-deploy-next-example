@@ -105,6 +105,16 @@ export function WebsocketDemo() {
         const buffer = arrayBuffer.slice(4);
         switch (eventType) {
             case 1:
+                const imageTypeSize = 4
+                const outputIdSize = 24
+
+                // Extract the bytes for the output_id
+                let outputIdBytes = new Uint8Array(buffer, imageTypeSize, outputIdSize);
+                // Convert the bytes to an ASCII string
+                let outputId = new TextDecoder("ascii").decode(outputIdBytes);
+
+                console.log("Extracted output_id:", outputId);
+
                 const view2 = new DataView(arrayBuffer);
                 const imageType = view2.getUint32(0)
                 let imageMime
@@ -119,7 +129,7 @@ export function WebsocketDemo() {
                     case 3:
                         imageMime = "image/webp"
                 }
-                const blob = new Blob([buffer.slice(4)], { type: imageMime });
+                const blob = new Blob([buffer.slice(4 + outputIdSize)], { type: imageMime });
                 const fileSize = blob.size;
                 console.log(`Received image size: ${(fileSize / 1024).toFixed(2)} KB`);
 
