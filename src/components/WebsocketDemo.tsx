@@ -7,6 +7,8 @@ import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { useDebounce } from "use-debounce";
 import { Input } from './ui/input';
 import { Badge } from './ui/badge';
+import { Skeleton } from './ui/skeleton';
+import { cn } from '@/lib/utils';
 
 export function WebsocketDemo() {
     const { data } = useSWR("ws", getWebsocketUrl, {
@@ -155,6 +157,8 @@ export function WebsocketDemo() {
         return connectWS(data)
     }, [connectWS, reconnectCounter])
 
+    const pending = (status == "not-connected" || status == "connecting" || status == "reconnecting" || currentLog?.startsWith("running") || (!currentLog && status == "connected"))
+
     return (
         <div className='flex md:flex-col gap-2 px-2 flex-col-reverse'>
             <div className='flex gap-2'>
@@ -165,7 +169,16 @@ export function WebsocketDemo() {
                     {status == "ready" && !currentLog && " running"}
                 </Badge>}
             </div>
-            <canvas ref={canvasRef} className='rounded-lg ring-1 ring-black/10' width="1024" height="1024"></canvas>
+
+            <div className='relative w-full'>
+                <canvas ref={canvasRef} className='rounded-lg ring-1 ring-black/10 w-full aspect-square' width={1024} height={1024}></canvas>
+                {
+                    <><Skeleton className={
+                        cn("absolute top-0 left-0 w-full h-full aspect-square opacity-20 transition-opacity", pending ? "visible" : "invisible opacity-0")
+                    } /></>
+                }
+            </div>
+
 
             <Input
                 type="text"
