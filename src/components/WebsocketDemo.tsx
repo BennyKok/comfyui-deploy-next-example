@@ -172,11 +172,11 @@ export function WebsocketDemo() {
 
             <div className='relative w-full'>
                 <canvas ref={canvasRef} className='rounded-lg ring-1 ring-black/10 w-full aspect-square' width={1024} height={1024}></canvas>
-                {
+                {/* {
                     <><Skeleton className={
                         cn("absolute top-0 left-0 w-full h-full aspect-square opacity-20 transition-opacity", pending ? "visible" : "invisible opacity-0")
                     } /></>
-                }
+                } */}
             </div>
 
 
