@@ -52,3 +52,9 @@ export async function getWebsocketUrl() {
         deployment_id: process.env.COMFY_DEPLOYMENT_WS!,
     })
 }
+
+export async function getWebsocketUrl2() {
+    return await client.getWebsocketUrl({
+        deployment_id: process.env.COMFY_DEPLOYMENT_WS2!,
+    })
+}

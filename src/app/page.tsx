@@ -27,19 +27,28 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ImageGenerationResult } from "@/components/ImageGenerationResult";
 import { WebsocketDemo } from "@/components/WebsocketDemo";
+import { WebsocketDemo2 } from "@/components/WebsocketDemo2";
+import { cn } from "@/lib/utils";
 
 export default function Page() {
+
+  const [seletedTab, setSelectedTab] = useState("ws2");
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between mt-10">
-      <Tabs defaultValue="ws" className="w-full max-w-[600px]">
-        <TabsList className="grid w-full grid-cols-4">
+      <Tabs value={seletedTab} onValueChange={setSelectedTab} className={cn("w-full flex flex-col items-center", seletedTab == "ws2" ? " max-w-[1200px]" : "max-w-[600px]")}>
+        <TabsList className="grid w-full grid-cols-5 max-w-[600px]">
           <TabsTrigger value="ws">Realtime</TabsTrigger>
+          <TabsTrigger value="ws2">Realtime 2</TabsTrigger>
           <TabsTrigger value="txt2img">txt2img</TabsTrigger>
           <TabsTrigger value="img2img">img2img</TabsTrigger>
           <TabsTrigger value="controlpose">Controlpose</TabsTrigger>
         </TabsList>
         <TabsContent value="ws">
           <WebsocketDemo />
+        </TabsContent>
+        <TabsContent value="ws2">
+          <WebsocketDemo2 />
         </TabsContent>
         <TabsContent value="txt2img">
           <Txt2img />
@@ -207,7 +216,7 @@ function Img2img() {
             Generate {loading && <LoadingIcon />}
           </Button>
 
-          {runId && <ImageGenerationResult key={runId} runId={runId} className="aspect-square"/>}
+          {runId && <ImageGenerationResult key={runId} runId={runId} className="aspect-square" />}
         </form>
       </CardContent>
     </Card>
@@ -356,7 +365,7 @@ function OpenposeToImage() {
               decorative
             /> */}
             <div className="w-full h-full">
-              {runId && <ImageGenerationResult key={runId} runId={runId} className="aspect-[768/1152]"/>}
+              {runId && <ImageGenerationResult key={runId} runId={runId} className="aspect-[768/1152]" />}
             </div>
           </div>
         </form>
