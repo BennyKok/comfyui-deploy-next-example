@@ -64,11 +64,11 @@ export default function Page() {
       </Tabs>
 
       <div className="fixed bottom-4 flex gap-2">
-        <Button>
-          <a href="https://github.com/BennyKok/comfyui-deploy" target="_blank" className="flex gap-2 items-center">GitHub <VscGithubAlt /></a>
+        <Button asChild>
+          <a href="https://github.com/BennyKok/comfyui-deploy" target="_blank" className="plausible-event-name=Button+Github flex gap-2 items-center">GitHub <VscGithubAlt /></a>
         </Button>
-        <Button>
-          <a href="https://discord.gg/qtHUaVNRVM" target="_blank" className="flex gap-2 items-center">Discord <FaDiscord /></a>
+        <Button asChild>
+          <a href="https://discord.gg/qtHUaVNRVM" className="plausible-event-name=Button+Discord" target="_blank" className="flex gap-2 items-center">Discord <FaDiscord /></a>
         </Button>
       </div>
     </main>
