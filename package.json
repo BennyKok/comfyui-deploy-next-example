@@ -24,6 +24,7 @@
     "html2canvas": "^1.4.1",
     "lucide-react": "^0.309.0",
     "next": "14.0.3",
+    "next-plausible": "^3.12.0",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.49.3",

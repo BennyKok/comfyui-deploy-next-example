@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import PlausibleProvider from "next-plausible";
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const runtime = 'edge' 
+export const runtime = 'edge'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -19,6 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       {/* <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta> */}
+      {process.env.PLAUSIBLE_DOMAIN && (
+        <head>
+          <PlausibleProvider domain={process.env.PLAUSIBLE_DOMAIN} />
+        </head>
+      )}
       <body className={inter.className}>{children}</body>
     </html>
   )
