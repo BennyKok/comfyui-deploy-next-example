@@ -58,7 +58,7 @@ export function WebsocketDemo() {
                 <Badge variant={'outline'} className='w-fit'>Status: {status}</Badge>
                 {(currentLog || status == "connected" || status == "ready") && <Badge variant={'outline'} className='w-fit'>
                     {currentLog}
-                    {status == "connected" && !currentLog && "stating comfy ui"}
+                    {status == "connected" && !currentLog && "starting comfy ui"}
                     {status == "ready" && !currentLog && " running"}
                 </Badge>}
             </div>
