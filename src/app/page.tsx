@@ -12,6 +12,8 @@ import {
   generate_img_with_controlnet,
   getUploadUrl,
 } from "@/server/generate";
+import { VscGithubAlt } from "react-icons/vsc";
+import { FaDiscord } from "react-icons/fa";
 import { useEffect, useState } from "react";
 
 import {
@@ -60,6 +62,15 @@ export default function Page() {
           <OpenposeToImage />
         </TabsContent>
       </Tabs>
+
+      <div className="fixed bottom-4 flex gap-2">
+        <Button>
+          <a href="https://github.com/BennyKok/comfyui-deploy" target="_blank" className="flex gap-2 items-center">GitHub <VscGithubAlt /></a>
+        </Button>
+        <Button>
+          <a href="https://discord.gg/qtHUaVNRVM" target="_blank" className="flex gap-2 items-center">Discord <FaDiscord /></a>
+        </Button>
+      </div>
     </main>
   );
 }
