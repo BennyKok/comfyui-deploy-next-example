@@ -15,7 +15,7 @@ import { Slider } from './ui/slider';
 
 export function WebsocketDemo2() {
     const [prompt, setPrompt] = useState('A boat');
-    const [denoise, setDenoise] = useState(0.6);
+    const [denoise, setDenoise] = useState(0.8);
     const [debouncedPrompt] = useDebounce(prompt, 200);
     const [debouncedDenoise] = useDebounce(denoise, 200);
     const canvasRef = useRef<HTMLCanvasElement>(null); // Reference to the canvas element
