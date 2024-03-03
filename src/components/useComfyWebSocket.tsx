@@ -18,6 +18,7 @@ export function useComfyWebSocket({
     });
     const [ws, setWs] = useState<WebSocket>();
     const [status, setStatus] = useState("not-connected");
+    const [remainingQueue, setRemainingQueue] = useState(0);
 
     const [currentLog, setCurrentLog] = useState<string>();
     const [reconnectCounter, setReconnectCounter] = useState(0);
@@ -120,6 +121,9 @@ export function useComfyWebSocket({
                 if (message?.event == "status" && message?.data?.sid) {
                     setStatus("ready");
                 }
+                if (message?.event == "status" && message?.data?.status?.exec_info) {
+                    setRemainingQueue(message.data.status.exec_info.queue_remaining);
+                }
                 if (message?.event) {
                     if (message?.event == "executing" && message?.data?.node == null)
                         setCurrentLog("done");
@@ -196,5 +200,5 @@ export function useComfyWebSocket({
         return connectWS(data);
     }, [connectWS, reconnectCounter]);
 
-    return { status, sendInput, connectWS, sendImageInput, currentLog };
+    return { status, sendInput, connectWS, sendImageInput, currentLog, remainingQueue };
 }
