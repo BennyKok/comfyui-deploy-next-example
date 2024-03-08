@@ -37,6 +37,7 @@ export function useComfyWebSocket({
 
         if (ws?.readyState == ws?.CLOSED) {
             setStatus('reconnecting');
+            statusRef.current = 'reconnecting'
             setReconnectCounter(x => x + 1);
             return;
         }
@@ -58,6 +59,7 @@ export function useComfyWebSocket({
 
         if (ws?.readyState == ws?.CLOSED) {
             setStatus('reconnecting');
+            statusRef.current = 'reconnecting'
             setReconnectCounter(x => x + 1);
             return;
         }
@@ -110,6 +112,9 @@ export function useComfyWebSocket({
 
     const connectWS = useCallback((data: NonNullable<Awaited<ReturnType<typeof getWebsocketUrl>>>) => {
         setStatus("connecting");
+        console.log("Connecting");
+        statusRef.current = 'connecting'
+
         const websocket = new WebSocket(data.ws_connection_url);
         websocket.binaryType = "arraybuffer";
         websocket.onopen = () => {
@@ -132,10 +137,10 @@ export function useComfyWebSocket({
                     else if (message?.event == "elapsed_time")
                         setCurrentLog(`elapsed time: ${Math.ceil(message.data?.elapsed_time * 100) / 100}s`);
                 }
-                console.log("Received message:", message);
+                // console.log("Received message:", message);
             }
             if (event.data instanceof ArrayBuffer) {
-                console.log("Received binary message:");
+                // console.log("Received binary message:");
 
                 const arrayBuffer = event.data;
 
@@ -194,6 +199,11 @@ export function useComfyWebSocket({
     useEffect(() => {
         if (!data) {
             setStatus("not-connected");
+            console.log(
+                "not-connected"
+            );
+            
+            statusRef.current = 'not-connected'
             return;
         }
 

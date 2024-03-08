@@ -31,17 +31,19 @@ import { ImageGenerationResult } from "@/components/ImageGenerationResult";
 import { WebsocketDemo } from "@/components/WebsocketDemo";
 import { WebsocketDemo2 } from "@/components/WebsocketDemo2";
 import { cn } from "@/lib/utils";
+import { WebsocketDemo3 } from "@/components/WebsocketDemo3";
 
 export default function Page() {
 
-  const [seletedTab, setSelectedTab] = useState("ws2");
+  const [seletedTab, setSelectedTab] = useState("ws3");
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between mt-10">
-      <Tabs value={seletedTab} onValueChange={setSelectedTab} className={cn("w-full flex flex-col items-center", seletedTab == "ws2" ? " max-w-[1200px]" : "max-w-[600px]")}>
-        <TabsList className="grid w-full grid-cols-5 max-w-[600px]">
+      <Tabs value={seletedTab} onValueChange={setSelectedTab} className={cn("w-full flex flex-col items-center", (seletedTab == "ws2" || seletedTab == "ws3") ? " max-w-[1200px]" : "max-w-[600px]")}>
+        <TabsList className="grid w-full grid-cols-6 max-w-[600px]">
           <TabsTrigger value="ws">Realtime</TabsTrigger>
           <TabsTrigger value="ws2">Realtime 2</TabsTrigger>
+          <TabsTrigger value="ws3">Screen</TabsTrigger>
           <TabsTrigger value="txt2img">txt2img</TabsTrigger>
           <TabsTrigger value="img2img">img2img</TabsTrigger>
           <TabsTrigger value="controlpose">Controlpose</TabsTrigger>
@@ -51,6 +53,9 @@ export default function Page() {
         </TabsContent>
         <TabsContent value="ws2">
           <WebsocketDemo2 />
+        </TabsContent>
+        <TabsContent value="ws3">
+          <WebsocketDemo3 />
         </TabsContent>
         <TabsContent value="txt2img">
           <Txt2img />
@@ -68,7 +73,7 @@ export default function Page() {
           <a href="https://github.com/BennyKok/comfyui-deploy" target="_blank" className="plausible-event-name=Button+GitHub flex gap-2 items-center">GitHub <VscGithubAlt /></a>
         </Button>
         <Button asChild>
-          <a href="https://discord.gg/qtHUaVNRVM"  target="_blank" className="plausible-event-name=Button+Discord flex gap-2 items-center">Discord <FaDiscord /></a>
+          <a href="https://discord.gg/qtHUaVNRVM" target="_blank" className="plausible-event-name=Button+Discord flex gap-2 items-center">Discord <FaDiscord /></a>
         </Button>
       </div>
     </main>
