@@ -38,8 +38,8 @@ export default function Page() {
   const [seletedTab, setSelectedTab] = useState("ws3");
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between mt-10">
-      <Tabs value={seletedTab} onValueChange={setSelectedTab} className={cn("w-full flex flex-col items-center", (seletedTab == "ws2" || seletedTab == "ws3") ? " max-w-[1200px]" : "max-w-[600px]")}>
+    <main className="flex min-h-screen flex-col items-center justify-between mt-2">
+      <Tabs value={seletedTab} onValueChange={setSelectedTab} className={cn("w-full flex flex-col items-center", (seletedTab == "ws2" || seletedTab == "ws3") ? " " : "max-w-[600px]")}>
         <TabsList className="grid w-full grid-cols-6 max-w-[600px]">
           <TabsTrigger value="ws">Realtime</TabsTrigger>
           <TabsTrigger value="ws2">Realtime 2</TabsTrigger>
@@ -69,10 +69,10 @@ export default function Page() {
       </Tabs>
 
       <div className="fixed bottom-4 flex gap-2">
-        <Button asChild>
+        <Button asChild variant={"outline"}>
           <a href="https://github.com/BennyKok/comfyui-deploy" target="_blank" className="plausible-event-name=Button+GitHub flex gap-2 items-center">GitHub <VscGithubAlt /></a>
         </Button>
-        <Button asChild>
+        <Button asChild variant={"outline"}>
           <a href="https://discord.gg/qtHUaVNRVM" target="_blank" className="plausible-event-name=Button+Discord flex gap-2 items-center">Discord <FaDiscord /></a>
         </Button>
       </div>

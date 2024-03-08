@@ -131,9 +131,9 @@ export function WebsocketDemo3() {
                 });
             }}>
             <div className='flex flex-col gap-2'>
-                <div className='p-2 bg-gray-50 rounded-md'>The server queue remaining {remainingQueue}, the websocket will auto disconnect on 2 seconds non-interative, draw or type to trigger it.</div>
+                {/* <div className='p-2 bg-gray-50 rounded-md'>The server queue remaining {remainingQueue}, the websocket will auto disconnect on 2 seconds non-interative, draw or type to trigger it.</div> */}
                 <div className='flex md:flex-row gap-2 px-2 flex-col-reverse'>
-                    <canvas className='w-1/2 aspect-square bg-slate-50' ref={canvasRefIn}></canvas>
+                    <canvas className='w-1/2 aspect-square bg-primary-foreground' ref={canvasRefIn}></canvas>
                     {/* <div className=''> */}
                     <canvas ref={canvasRef} className='rounded-lg ring-1 ring-black/10 w-1/2 aspect-square' width={1024} height={1024}></canvas>
                     {/* </div> */}
@@ -199,8 +199,8 @@ function DragWrapper(props: {
         transform: CSS.Translate.toString(transform),
     };
 
-    return <Card className='bg-slate-100 p-2 rounded-sm space-y-2 w-96 absolute' ref={setNodeRef} style={{ ...style, top: props.y, left: props.x }} >
-        <div className='flex justify-between text-sm items-center bg-slate-200 py-2 px-3 rounded-sm'>
+    return <Card className=' p-2 rounded-sm space-y-2 w-96 absolute' ref={setNodeRef} style={{ ...style, top: props.y, left: props.x }} >
+        <div className='flex justify-between text-sm items-center  bg-primary-foreground py-2 px-3 rounded-sm'>
             <span className='flex items-center gap-2'> <Settings size={16} /> Settings</span>
             <button {...listeners} {...attributes} ><Equal size={16} /></button>
         </div>
