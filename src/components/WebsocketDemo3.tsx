@@ -26,12 +26,17 @@ import {
     snapCenterToCursor,
 } from '@dnd-kit/modifiers';
 import { Cog, Equal, Settings } from 'lucide-react';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from './ui/select';
 
 export function WebsocketDemo3() {
     const [prompt, setPrompt] = useState('A cyberpunk game, unreal engine, inside a room, industrial');
-    const [denoise, setDenoise] = useState(0.72);
     const [debouncedPrompt] = useDebounce(prompt, 200);
+
+    const [denoise, setDenoise] = useState(0.72);
     const [debouncedDenoise] = useDebounce(denoise, 200);
+
+    const [checkpoint, setCheckpoint] = useDebounce("juggernautXL_v9Rdphoto2Lightning.safetensors", 200);
+
     const canvasRef = useRef<HTMLCanvasElement>(null); // Reference to the canvas element
     const canvasRefIn = useRef<HTMLCanvasElement>(null); // Reference to the canvas element
 
@@ -84,8 +89,9 @@ export function WebsocketDemo3() {
             "input_text": debouncedPrompt,
             "input_number": debouncedDenoise,
             "seed": debouncedSeed,
+            "input_checkpoint": checkpoint,
         });
-    }, [debouncedPrompt, debouncedDenoise, debouncedSeed])
+    }, [debouncedPrompt, debouncedDenoise, debouncedSeed, checkpoint])
 
     const preStatus = useRef(status)
 
@@ -149,6 +155,19 @@ export function WebsocketDemo3() {
                             {status == "ready" && !currentLog && " running"}
                         </Badge>}
                     </div>
+                    <Select onValueChange={(e) => {
+                        setCheckpoint(e);
+                    }}>
+                        <SelectTrigger className="w-[180px]" >
+                            <SelectValue placeholder="Select a fruit" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectItem value="juggernautXL_v9Rdphoto2Lightning.safetensors">juggernautXL</SelectItem>
+                                <SelectItem value="modernDisneyXL_v3.safetensors">modernDisneyXL</SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
                     <div className='flex flex-row gap-2'>
                         {
                             isStarted && <Button onClick={stopScreenCapture} className="py-2 px-4 bg-red-500 text-white rounded hover:bg-red-700">
