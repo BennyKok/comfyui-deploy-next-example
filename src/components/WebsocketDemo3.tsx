@@ -1,6 +1,6 @@
 "use client"
 
-import { getWebsocketUrl2, getWebsocketUrl3 } from '@/server/generate'
+import { getWebsocketUrl2, getWebsocketUrl3, getWebsocketUrlAny } from '@/server/generate'
 import { RefObject, useEffect, useRef, useState } from 'react'
 import { useDebounce } from "use-debounce";
 import { Input } from './ui/input';
@@ -25,8 +25,17 @@ import {
     restrictToWindowEdges,
     snapCenterToCursor,
 } from '@dnd-kit/modifiers';
-import { Cog, Equal, Settings } from 'lucide-react';
+import { Camera, Cog, Equal, Pause, Play, ScreenShare, Settings } from 'lucide-react';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from './ui/select';
+
+const jugg = {
+    input_checkpoint: "juggernautXL_v9Rdphoto2Lightning.safetensors",
+    deployment_id: "701495af-361b-4962-8471-ea0df08ad130",
+}
+const disney = {
+    input_checkpoint: "modernDisneyXL_v3.safetensors",
+    deployment_id: "886a9b15-3585-4491-9226-04d0e7d41aff",
+}
 
 export function WebsocketDemo3() {
     const [prompt, setPrompt] = useState('A cyberpunk game, unreal engine, inside a room, industrial');
@@ -50,6 +59,8 @@ export function WebsocketDemo3() {
     const [seed, setSeed] = useState(1112148005096468)
     const [debouncedSeed] = useDebounce(seed, 200);
 
+    const [selectedWorkflow, setSelectedWorkflow] = useState(jugg);
+
     useEffect(() => {
         sendReceiveRef.current = {
             sent: 0,
@@ -59,7 +70,8 @@ export function WebsocketDemo3() {
     }, [pause])
 
     const { status, sendInput, currentLog, sendImageInput, remainingQueue } = useComfyWebSocket({
-        getWebsocketUrl: getWebsocketUrl3, onOutputReceived: ({
+        workflow_id: selectedWorkflow.deployment_id,
+        getWebsocketUrl: getWebsocketUrlAny, onOutputReceived: ({
             data,
             outputId
         }) => {
@@ -89,9 +101,9 @@ export function WebsocketDemo3() {
             "input_text": debouncedPrompt,
             "input_number": debouncedDenoise,
             "seed": debouncedSeed,
-            "input_checkpoint": checkpoint,
+            // "input_checkpoint": checkpoint,
         });
-    }, [debouncedPrompt, debouncedDenoise, debouncedSeed, checkpoint])
+    }, [debouncedPrompt, debouncedDenoise, debouncedSeed])
 
     const preStatus = useRef(status)
 
@@ -155,32 +167,54 @@ export function WebsocketDemo3() {
                             {status == "ready" && !currentLog && " running"}
                         </Badge>}
                     </div>
-                    <Select onValueChange={(e) => {
-                        setCheckpoint(e);
-                    }}>
+                    <Select
+                        defaultValue='wf1'
+                        onValueChange={(e) => {
+                            // setCheckpoint(e);
+                            if (e == "wf1") {
+                                setSelectedWorkflow(jugg)
+                            }
+                            if (e == "wf2") {
+                                setSelectedWorkflow(disney)
+                            }
+                        }}>
                         <SelectTrigger className="w-[180px]" >
                             <SelectValue placeholder="Select a fruit" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
-                                <SelectItem value="juggernautXL_v9Rdphoto2Lightning.safetensors">juggernautXL</SelectItem>
-                                <SelectItem value="modernDisneyXL_v3.safetensors">modernDisneyXL</SelectItem>
+                                <SelectItem value="wf1">Workflow 1</SelectItem>
+                                <SelectItem value="wf2">Workflow 2</SelectItem>
                             </SelectGroup>
                         </SelectContent>
                     </Select>
                     <div className='flex flex-row gap-2'>
                         {
                             isStarted && <Button onClick={stopScreenCapture} className="py-2 px-4 bg-red-500 text-white rounded hover:bg-red-700">
-                                Stop Screen Capture
+                                Stop Capture
                             </Button>
                         }
                         {
-                            !isStarted && <Button onClick={startScreenCapture} className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700">
-                                Start Screen Capture
+                            !isStarted && <Button onClick={() => {
+                                startScreenCapture()
+                            }} className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700">
+                                <ScreenShare size={20} />
+                            </Button>
+                        }
+                        {
+                            !isStarted && <Button onClick={() => {
+                                startScreenCapture({
+                                    video: {
+                                        facingMode: "user",
+                                        // width: { exact: 1024 }, height: { exact: 1024 }
+                                    }
+                                }, false)
+                            }} className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700">
+                                <Camera size={20} />
                             </Button>
                         }
                         <Button onClick={() => setPause(!pause)} className="py-2 px-4 bg-yellow-500 text-white rounded hover:bg-yellow-700">
-                            {pause ? "Resume" : "Pause"}
+                            {pause ? <Play size={20}></Play> : <Pause size={20}></Pause>}
                         </Button>
                     </div>
                     <Textarea
@@ -261,12 +295,12 @@ function useEditorEvent(props: {
         onChangeRef.current = props.onChange
     }, [props.onChange])
 
-    const startScreenCapture = async () => {
+    const startScreenCapture = async (captureConstraints: MediaStreamConstraints = { video: true }, display: boolean = true) => {
         if (!props.canvasDiv.current) return;
         try {
-            const stream = await navigator.mediaDevices.getDisplayMedia({
-                video: true
-            });
+            console.log(captureConstraints);
+            const stream = display ? await navigator.mediaDevices.getDisplayMedia(captureConstraints) : await navigator.mediaDevices.getUserMedia(captureConstraints);
+
             setMediaStream(stream);
             const video = document.createElement('video');
             video.srcObject = stream;

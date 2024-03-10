@@ -38,7 +38,7 @@ export default function Page() {
   const [seletedTab, setSelectedTab] = useState("ws3");
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between mt-2">
+    <main className="flex min-h-screen flex-col items-center justify-between mt-2 ">
       <Tabs value={seletedTab} onValueChange={setSelectedTab} className={cn("w-full flex flex-col items-center", (seletedTab == "ws2" || seletedTab == "ws3") ? " " : "max-w-[600px]")}>
         <TabsList className="grid w-full grid-cols-6 max-w-[600px]">
           <TabsTrigger value="ws">Realtime</TabsTrigger>
