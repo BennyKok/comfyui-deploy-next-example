@@ -30,6 +30,7 @@ export function WebsocketDemo2() {
     const [canvasDiv, setCanvasDiv] = useState<HTMLDivElement>()
 
     const { status, sendInput, currentLog, sendImageInput, remainingQueue } = useComfyWebSocket({
+        workflow_id: "1",
         getWebsocketUrl: getWebsocketUrl2, onOutputReceived: ({
             data
         }) => {

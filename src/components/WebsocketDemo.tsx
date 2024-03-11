@@ -13,6 +13,7 @@ export function WebsocketDemo() {
     const canvasRef = useRef<HTMLCanvasElement>(null); // Reference to the canvas element
 
     const { status, sendInput, currentLog } = useComfyWebSocket({
+        workflow_id: "0",
         getWebsocketUrl: getWebsocketUrl, onOutputReceived: ({
             data
         }) => {
