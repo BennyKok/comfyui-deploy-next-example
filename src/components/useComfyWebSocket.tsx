@@ -14,7 +14,7 @@ export function useComfyWebSocket({
     }) => void;
 }) {
     const { data } = useSWR("ws", getWebsocketUrl, {
-        revalidateOnFocus: false,
+        revalidateOnFocus: true,
     });
     const [ws, setWs] = useState<WebSocket>();
     const [status, setStatus] = useState("not-connected");
@@ -197,6 +197,7 @@ export function useComfyWebSocket({
     }, [data]);
 
     useEffect(() => {
+        console.log("start in useeffect: ", data)
         if (!data) {
             setStatus("not-connected");
             console.log(
@@ -207,6 +208,7 @@ export function useComfyWebSocket({
             return;
         }
 
+        console.log('here', data)
         return connectWS(data);
     }, [connectWS, reconnectCounter]);
 

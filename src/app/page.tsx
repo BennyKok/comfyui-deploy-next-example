@@ -32,21 +32,23 @@ import { WebsocketDemo } from "@/components/WebsocketDemo";
 import { WebsocketDemo2 } from "@/components/WebsocketDemo2";
 import { cn } from "@/lib/utils";
 import { WebsocketDemo3 } from "@/components/WebsocketDemo3";
+import { WebsocketDemo4 } from "@/components/WebsocketDemo4";
 
 export default function Page() {
 
-  const [seletedTab, setSelectedTab] = useState("ws3");
+  const [seletedTab, setSelectedTab] = useState("ws4");
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between mt-2">
-      <Tabs value={seletedTab} onValueChange={setSelectedTab} className={cn("w-full flex flex-col items-center", (seletedTab == "ws2" || seletedTab == "ws3") ? " " : "max-w-[600px]")}>
-        <TabsList className="grid w-full grid-cols-6 max-w-[600px]">
+      <Tabs value={seletedTab} onValueChange={setSelectedTab} className={cn("w-full flex flex-col items-center", (seletedTab === "ws2" || seletedTab === "ws3" || seletedTab === "ws4") ? " " : "max-w-[600px]")}>
+        <TabsList className="grid w-full grid-cols-7 max-w-[700px]">
           <TabsTrigger value="ws">Realtime</TabsTrigger>
           <TabsTrigger value="ws2">Realtime 2</TabsTrigger>
           <TabsTrigger value="ws3">Screen</TabsTrigger>
           <TabsTrigger value="txt2img">txt2img</TabsTrigger>
           <TabsTrigger value="img2img">img2img</TabsTrigger>
           <TabsTrigger value="controlpose">Controlpose</TabsTrigger>
+          <TabsTrigger value="ws4">websocket4</TabsTrigger>
         </TabsList>
         <TabsContent value="ws">
           <WebsocketDemo />
@@ -56,6 +58,9 @@ export default function Page() {
         </TabsContent>
         <TabsContent value="ws3">
           <WebsocketDemo3 />
+        </TabsContent>
+        <TabsContent value="ws4">
+          <WebsocketDemo4 />
         </TabsContent>
         <TabsContent value="txt2img">
           <Txt2img />
