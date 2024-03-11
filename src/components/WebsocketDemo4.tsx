@@ -1,6 +1,6 @@
 "use client"
 
-import { getWebsocketUrl2, getWebsocketUrl3, getWebsocketUrl4  } from '@/server/generate'
+import { getWebsocketUrl2, getWebsocketUrl3, getWebsocketUrl4, getWebsocketUrlAny  } from '@/server/generate'
 import { RefObject, useEffect, useRef, useState } from 'react'
 import { useDebounce } from "use-debounce";
 import { Input } from './ui/input';
@@ -39,8 +39,6 @@ export function WebsocketDemo4() {
 
     const [pause, setPause] = useState(false)
 
-    // const [seed, setSeed] = useState(1112148005096468)
-    // const [debouncedSeed] = useDebounce(seed, 200);
     const [prompt, setPrompt] = useState('A cyberpunk game, unreal engine, inside a room, industrial');
     const [debouncedPrompt] = useDebounce(prompt, 200);
 
@@ -53,7 +51,8 @@ export function WebsocketDemo4() {
     }, [pause])
 
     const { status, sendInput, currentLog, sendImageInput, remainingQueue } = useComfyWebSocket({
-        getWebsocketUrl: getWebsocketUrl4, onOutputReceived: ({
+        workflow_id: "d7ba66c1-319b-4f59-aeaf-bd0353761de4",
+        getWebsocketUrl: getWebsocketUrlAny, onOutputReceived: ({
             data,
             outputId
         }) => {
@@ -86,6 +85,17 @@ export function WebsocketDemo4() {
 
     const preStatus = useRef(status)
 
+    useEffect(() => {
+        if (preStatus.current != status && status == "ready") {
+            sendInput({
+                "input_text": debouncedPrompt,
+            });
+        }
+
+        preStatus.current = status
+    }, [status])
+
+
     const { startScreenCapture, stopScreenCapture, isStarted } = useEditorEvent(
         {
             status: status,
@@ -95,7 +105,7 @@ export function WebsocketDemo4() {
             sendReceiveRef: sendReceiveRef,
             onChange: async (blob) => {
                 console.log('changed');
-                sendImageInput("input_id", await blob.arrayBuffer(), 'image/webp');
+                sendImageInput("image", await blob.arrayBuffer(), 'image/webp');
             }
         }
     )

@@ -6,15 +6,16 @@ import { ComfyDeployClient } from 'comfydeploy';
 
 
 export function useComfyWebSocket({
-    getWebsocketUrl, onOutputReceived
+    getWebsocketUrl, onOutputReceived, workflow_id
 }: {
-    getWebsocketUrl: () => ReturnType<ComfyDeployClient["getWebsocketUrl"]>;
+    workflow_id: string;
+    getWebsocketUrl: (workflow_id: string) => ReturnType<ComfyDeployClient["getWebsocketUrl"]>;
     onOutputReceived?: (props: {
         outputId: string; imageType: string; data: Blob;
     }) => void;
 }) {
-    const { data } = useSWR("ws", getWebsocketUrl, {
-        revalidateOnFocus: true,
+    const { data } = useSWR(workflow_id, getWebsocketUrl.bind(null, workflow_id), {
+        revalidateOnFocus: false,
     });
     const [ws, setWs] = useState<WebSocket>();
     const [status, setStatus] = useState("not-connected");
@@ -137,7 +138,7 @@ export function useComfyWebSocket({
                     else if (message?.event == "elapsed_time")
                         setCurrentLog(`elapsed time: ${Math.ceil(message.data?.elapsed_time * 100) / 100}s`);
                 }
-                // console.log("Received message:", message);
+                console.log("Received message:", message);
             }
             if (event.data instanceof ArrayBuffer) {
                 // console.log("Received binary message:");

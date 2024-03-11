@@ -70,3 +70,9 @@ export async function getWebsocketUrl4() {
         deployment_id: process.env.COMFY_DEPLOYMENT_WS4!,
     })
 }
+
+export async function getWebsocketUrlAny(deployment_id: string) {
+    return await client.getWebsocketUrl({
+        deployment_id: deployment_id,
+    })
+}
