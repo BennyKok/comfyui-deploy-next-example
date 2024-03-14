@@ -4,6 +4,10 @@ Create an account on [ComfyDeply](https://comfydeploy.com/) setup your workflow 
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+Workflow Demo
+1. Text 2 Image -> https://www.comfydeploy.com/share/fb58d1cd-8a45-4893-9ab4-ea88d713c9b7
+2. Control Net Image 2 Image -> https://www.comfydeploy.com/share/333f0b66-b312-41f7-ba26-187dde7a1af0
+
 ## Getting Started
 
 First, run the development server:
