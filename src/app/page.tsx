@@ -32,10 +32,12 @@ import { WebsocketDemo } from "@/components/WebsocketDemo";
 import { WebsocketDemo2 } from "@/components/WebsocketDemo2";
 import { cn } from "@/lib/utils";
 import { WebsocketDemo3 } from "@/components/WebsocketDemo3";
+import { parseAsInteger, parseAsIsoDateTime, useQueryState } from "next-usequerystate";
 
 export default function Page() {
-
-  const [seletedTab, setSelectedTab] = useState("ws3");
+  const [seletedTab, setSelectedTab] = useQueryState("demo", {
+    defaultValue: "ws3",
+  });
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between mt-2 ">
