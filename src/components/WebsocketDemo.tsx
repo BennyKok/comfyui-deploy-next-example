@@ -6,6 +6,7 @@ import { useDebounce } from "use-debounce";
 import { Input } from './ui/input';
 import { Badge } from './ui/badge';
 import { useComfyWebSocket } from './useComfyWebSocket';
+import { DemoClosedNotice } from '@/components/DemoClosedNotice';
 
 export function WebsocketDemo() {
     const [prompt, setPrompt] = useState('A anime cat');
@@ -13,6 +14,7 @@ export function WebsocketDemo() {
     const canvasRef = useRef<HTMLCanvasElement>(null); // Reference to the canvas element
 
     const { status, sendInput, currentLog } = useComfyWebSocket({
+        enabled: false,
         workflow_id: "0",
         getWebsocketUrl: getWebsocketUrl, onOutputReceived: ({
             data
@@ -55,6 +57,7 @@ export function WebsocketDemo() {
 
     return (
         <div className='flex md:flex-col gap-2 px-2 flex-col-reverse'>
+            <DemoClosedNotice />
             <div className='flex gap-2'>
                 <Badge variant={'outline'} className='w-fit'>Status: {status}</Badge>
                 {(currentLog || status == "connected" || status == "ready") && <Badge variant={'outline'} className='w-fit'>

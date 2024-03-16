@@ -5,10 +5,12 @@ import useSWR from "swr";
 import type { ComfyDeployClient } from "comfydeploy";
 
 export function useComfyWebSocket({
+	enabled = true,
 	getWebsocketUrl,
 	onOutputReceived,
 	workflow_id,
 }: {
+	enabled?: boolean;
 	workflow_id: string;
 	getWebsocketUrl: (
 		workflow_id: string,
@@ -20,7 +22,7 @@ export function useComfyWebSocket({
 	}) => void;
 }) {
 	const { data } = useSWR(
-		workflow_id,
+		enabled ? workflow_id : undefined,
 		getWebsocketUrl.bind(null, workflow_id),
 		{
 			revalidateOnFocus: false,
@@ -165,8 +167,7 @@ export function useComfyWebSocket({
 							);
 						else if (message?.event == "elapsed_time")
 							setCurrentLog(
-								`elapsed time: ${
-									Math.ceil(message.data?.elapsed_time * 100) / 100
+								`elapsed time: ${Math.ceil(message.data?.elapsed_time * 100) / 100
 								}s`,
 							);
 					}

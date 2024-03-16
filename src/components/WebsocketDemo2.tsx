@@ -12,6 +12,7 @@ import { useThrottledCallback } from 'use-debounce';
 import html2canvas from 'html2canvas';
 import { toBlob } from 'html-to-image';
 import { Slider } from './ui/slider';
+import { DemoClosedNotice } from './DemoClosedNotice';
 
 export function WebsocketDemo2() {
     const [prompt, setPrompt] = useState('A boat');
@@ -23,14 +24,11 @@ export function WebsocketDemo2() {
     const [seed, setSeed] = useState(1112148005096468)
     const [debouncedSeed] = useDebounce(seed, 200);
 
-    const { data } = useSWR("image", async () => {
-        return fetch("https://media.discordapp.net/attachments/1196602911266971648/1213267514998657084/svqenSwnT2yZQCBpdBsBcQ.png?ex=65f4da6c&is=65e2656c&hm=cec56afa76a0c04c956ee9161f5d7fd7b342226347474474362d349783588578&=&format=webp&quality=lossless&width=700&height=700").then(res => res.arrayBuffer())
-    })
-
     const [canvasDiv, setCanvasDiv] = useState<HTMLDivElement>()
 
     const { status, sendInput, currentLog, sendImageInput, remainingQueue } = useComfyWebSocket({
         workflow_id: "1",
+        enabled: false,
         getWebsocketUrl: getWebsocketUrl2, onOutputReceived: ({
             data
         }) => {
@@ -78,7 +76,9 @@ export function WebsocketDemo2() {
 
     return (
         <div className='flex flex-col gap-2'>
-            <div className='p-2 bg-primary-foreground rounded-md'>We are on high server load, this is now running on A100 40GB, with max 10 concurrent inputs, the server queue remaining {remainingQueue}, the websocket will auto disconnect on 2 seconds non-interative, draw or type to trigger it.</div>
+            <DemoClosedNotice />
+
+            {/* <div className='p-2 bg-primary-foreground rounded-md'>We are on high server load, this is now running on A100 40GB, with max 10 concurrent inputs, the server queue remaining {remainingQueue}, the websocket will auto disconnect on 2 seconds non-interative, draw or type to trigger it.</div> */}
             <div className='flex md:flex-row gap-2 px-2 flex-col-reverse'>
                 <div className='w-1/2 aspect-square'>
                     <Tldraw

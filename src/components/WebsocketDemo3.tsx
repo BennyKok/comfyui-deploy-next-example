@@ -27,6 +27,7 @@ import {
 } from '@dnd-kit/modifiers';
 import { Camera, Cog, Equal, Pause, Play, ScreenShare, Settings } from 'lucide-react';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from './ui/select';
+import { DemoClosedNotice } from '@/components/DemoClosedNotice';
 
 const jugg = {
     input_checkpoint: "juggernautXL_v9Rdphoto2Lightning.safetensors",
@@ -71,6 +72,7 @@ export function WebsocketDemo3() {
 
     const { status, sendInput, currentLog, sendImageInput, remainingQueue } = useComfyWebSocket({
         workflow_id: selectedWorkflow.deployment_id,
+        enabled: false,
         getWebsocketUrl: getWebsocketUrlAny, onOutputReceived: ({
             data,
             outputId
@@ -149,6 +151,7 @@ export function WebsocketDemo3() {
                 });
             }}>
             <div className='flex flex-col gap-2'>
+                <DemoClosedNotice />
                 {/* <div className='p-2 bg-gray-50 rounded-md'>The server queue remaining {remainingQueue}, the websocket will auto disconnect on 2 seconds non-interative, draw or type to trigger it.</div> */}
                 <div className='flex md:flex-row gap-2 px-2 flex-col-reverse'>
                     <canvas className='w-1/2 aspect-square bg-primary-foreground' ref={canvasRefIn}></canvas>

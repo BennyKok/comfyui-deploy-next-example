@@ -36,7 +36,7 @@ import { parseAsInteger, parseAsIsoDateTime, useQueryState } from "next-usequery
 
 export default function Page() {
   const [seletedTab, setSelectedTab] = useQueryState("demo", {
-    defaultValue: "ws3",
+    defaultValue: "txt2img",
   });
 
   return (
