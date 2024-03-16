@@ -33,6 +33,7 @@ import { WebsocketDemo2 } from "@/components/WebsocketDemo2";
 import { cn } from "@/lib/utils";
 import { WebsocketDemo3 } from "@/components/WebsocketDemo3";
 import { parseAsInteger, parseAsIsoDateTime, useQueryState } from "next-usequerystate";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function Page() {
   const [seletedTab, setSelectedTab] = useQueryState("demo", {
