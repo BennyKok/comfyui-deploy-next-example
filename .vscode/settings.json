@@ -1,0 +1,14 @@
+{
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"editor.formatOnSave": true,
+	"editor.codeActionsOnSave": {
+		"quickfix.biome": "always"
+	},
+	"typescript.preferences.importModuleSpecifier": "non-relative",
+	"spellright.language": ["en"],
+	"spellright.documentTypes": ["markdown", "typescript", "typescriptreact"],
+	"tailwindCSS.experimental.classRegex": [
+		["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+	],
+	"python.languageServer": "Default"
+}
