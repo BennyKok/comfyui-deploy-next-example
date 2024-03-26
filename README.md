@@ -1,7 +1,5 @@
 https://github.com/BennyKok/comfyui-deploy-next-example/assets/18395202/6e7e013c-21aa-432d-af77-07f729912f0f
 
-![Discord Banner 4](https://discordapp.com/api/guilds/7hn3vN8p/widget.png?style=banner4)
-
 ### Intro
 
 This project is designed to demonstrate the integration and utilization of the ComfyDeploy SDK within a Next.js application.
