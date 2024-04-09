@@ -168,7 +168,7 @@ function Img2img() {
         if (res) setStatus(res.status);
         if (res && res.status === "success") {
           console.log(res.outputs[0]?.data);
-          setImage(res.outputs[0]?.data?.images[0].url);
+          setImage(res.outputs[0]?.data?.images?.[0].url ?? "");
           setLoading(false);
           clearInterval(interval);
         }
@@ -288,7 +288,7 @@ function OpenposeToImage() {
         if (res) setStatus(res.status);
         if (res && res.status === "success") {
           console.log(res.outputs[0]?.data);
-          setImage(res.outputs[0]?.data?.images[0].url);
+          setImage(res.outputs[0]?.data?.images?.[0].url ?? "");
           setLoading(false);
           clearInterval(interval);
         }

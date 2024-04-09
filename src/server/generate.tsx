@@ -1,5 +1,6 @@
 "use server"
 
+import { headers } from "next/headers";
 import { ComfyDeployClient } from "comfydeploy"
 
 const client = new ComfyDeployClient({
@@ -8,11 +9,19 @@ const client = new ComfyDeployClient({
 })
 
 export async function generate(prompt: string) {
+    const headersList = headers();
+    const host = headersList.get("host") || "";
+    const protocol = headersList.get("x-forwarded-proto") || "";
+    const endpoint = `${protocol}://${host}`;
+    // Usage example: const currentUrl = getCurrentUrl(req); // req should be passed to the generate function
+    console.log(process.env.COMFY_DEPLOYMENT_ID);
+
     return await client.run({
         deployment_id: process.env.COMFY_DEPLOYMENT_ID!,
         inputs: {
-            "input_text": prompt
-        }
+            "positive_prompt": prompt
+        },
+        webhook: `${endpoint}/api/webhook`
     })
 }
 

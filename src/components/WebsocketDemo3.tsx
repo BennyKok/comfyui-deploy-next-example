@@ -1,7 +1,7 @@
 "use client"
 
 import { getWebsocketUrl2, getWebsocketUrl3, getWebsocketUrlAny } from '@/server/generate'
-import { RefObject, useEffect, useRef, useState } from 'react'
+import { type RefObject, useEffect, useRef, useState } from 'react'
 import { useDebounce } from "use-debounce";
 import { Input } from './ui/input';
 import { Badge } from './ui/badge';
@@ -17,7 +17,7 @@ import { Textarea } from './ui/textarea';
 import { Card } from './ui/card';
 import { DndContext, useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
-import { Coordinates } from '@dnd-kit/core/dist/types';
+import type { Coordinates } from '@dnd-kit/core/dist/types';
 import {
     createSnapModifier,
     restrictToHorizontalAxis,
@@ -228,7 +228,7 @@ export function WebsocketDemo3() {
                         className='text-sm'
                         type="number"
                         value={seed}
-                        onChange={(e) => setSeed(parseInt(e.target.value))}
+                        onChange={(e) => setSeed(Number.parseInt(e.target.value))}
                     />
                     <div className='flex text-sm'>
                         <Slider value={[denoise]} max={1} min={0} step={0.01} onValueChange={(e) => {
@@ -298,7 +298,7 @@ function useEditorEvent(props: {
         onChangeRef.current = props.onChange
     }, [props.onChange])
 
-    const startScreenCapture = async (captureConstraints: MediaStreamConstraints = { video: true }, display: boolean = true) => {
+    const startScreenCapture = async (captureConstraints: MediaStreamConstraints = { video: true }, display = true) => {
         if (!props.canvasDiv.current) return;
         try {
             console.log(captureConstraints);
