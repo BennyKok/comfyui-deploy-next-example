@@ -19,7 +19,7 @@ export async function generate(prompt: string) {
     return await client.run({
         deployment_id: process.env.COMFY_DEPLOYMENT_ID!,
         inputs: {
-            "positive_prompt": prompt
+            "input_text": prompt
         },
         webhook: `${endpoint}/api/webhook`
     })
