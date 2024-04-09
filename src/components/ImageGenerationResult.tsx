@@ -28,7 +28,7 @@ export function ImageGenerationResult({
         }
         if (res && res.status === "success") {
           console.log(res.outputs[0]?.data);
-          setImage(res.outputs[0]?.data?.images[0].url);
+          setImage(res.outputs[0]?.data?.images?.[0].url ?? "");
           setLoading(false);
           clearInterval(interval);
         }
